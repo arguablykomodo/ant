@@ -11,11 +11,16 @@ const context = canvas.getContext("2d", {
 
 const image = context.createImageData(canvas.width, canvas.height);
 
+// 1 is R, 3 is L
+const rule = [3, 1];
+
 const layout = new Map([
 	["data", canvas.width * canvas.height],
 	// RGBA8. Sadly there seems to be no way to get rid of the alpha channel
 	["pixels", canvas.width * canvas.height * 4],
 	["pallete", (2 ** 8) * 4],
+
+	["rule", rule.length],
 ]);
 
 // WebAssembly allocates in 4kb pages
@@ -29,21 +34,35 @@ const imports = { memory };
 [...layout].reduce((acc, [name, size]) => {
 	buffers[name] = new Uint8Array(memory.buffer, acc, size);
 	if (acc > 0) imports[name] = new WebAssembly.Global({ value: "i32" }, acc);
+	imports[name + "_size"] = new WebAssembly.Global({ value: "i32" }, size);
 	return acc + size;
 }, 0);
 
-// cyan to magenta gradient
-const palleteSize = layout.get("pallete");
-for (let i = 0; i < palleteSize; i += 4) {
-	buffers.pallete[i] = (i / palleteSize) * 256;
-	buffers.pallete[i + 1] = 255 - (i / palleteSize) * 256;
-	buffers.pallete[i + 2] = 255;
-	buffers.pallete[i + 3] = 255;
+buffers.pallete[0] = 10;
+buffers.pallete[1] = 10;
+buffers.pallete[2] = 20;
+buffers.pallete[3] = 255;
+
+buffers.pallete[4] = 127;
+buffers.pallete[5] = 127;
+buffers.pallete[6] = 255;
+buffers.pallete[7] = 255;
+
+for (let i = 0; i < rule.length; i++) {
+	buffers.rule[i] = rule[i];
 }
 
+imports.width = new WebAssembly.Global({ value: "i32" }, canvas.width);
+imports.height = new WebAssembly.Global({ value: "i32" }, canvas.height);
+imports.position = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
+imports.direction = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
+
 WebAssembly.instantiateStreaming(fetch("main.wasm"), { "js": imports }).then(wasm => {
-	wasm.instance.exports.fill();
-	wasm.instance.exports.draw();
-	image.data.set(buffers.pixels);
-	context.putImageData(image, 0, 0);
+	function update() {
+		wasm.instance.exports.update();
+		image.data.set(buffers.pixels);
+		context.putImageData(image, 0, 0);
+		requestAnimationFrame(update);
+	}
+	update();
 });
