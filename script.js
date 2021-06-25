@@ -13,8 +13,27 @@ const context = canvas.getContext("2d", {
 
 const image = context.createImageData(canvas.width, canvas.height);
 
-// 1 is R, 3 is L
-const rule = [3, 1];
+const rules = [
+	"LR",
+	"RRLR",
+	"RLRRLLRLLLLL",
+	"RRLLLRLLLRLL",
+	"LLRR",
+	"RLLR",
+	"RRLLLRLLLRRR",
+	"RRRLRRLRRR",
+	"RRLRLLRLRR",
+	"RRLLLRLLLR",
+	"RRLRLLRRRRLL",
+	"RLLLLRRRLLL",
+	"RLLLLLLRRRRL",
+	"RRLLLRLLLLL",
+	"RRLRRRLLLLLL",
+	"RLLRRRLRRRRR",
+	"RLRLRRRRRRRL"
+];
+const rule = rules[Math.floor(Math.random() * rules.length)]
+	.split("").map(char => char === "R" ? 1 : 3);
 
 const layout = new Map([
 	["data", canvas.width * canvas.height],
