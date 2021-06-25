@@ -32,8 +32,9 @@ const rules = [
 	"RLLRRRLRRRRR",
 	"RLRLRRRRRRRL"
 ];
-const rule = rules[Math.floor(Math.random() * rules.length)]
-	.split("").map(char => char === "R" ? 1 : 3);
+const ruleText = rules[Math.floor(Math.random() * rules.length)];
+document.getElementById("rule").value = ruleText
+const rule = ruleText.split("").map(char => char === "R" ? 1 : 3);
 
 const layout = new Map([
 	["data", canvas.width * canvas.height],
@@ -78,6 +79,10 @@ WebAssembly.instantiateStreaming(fetch("main.wasm"), { "js": imports }).then(was
 		context.putImageData(image, 0, 0);
 		steps = Math.min(steps * 1.01, 1000000); // Max 1 million steps per frame
 		if (result === 0) requestAnimationFrame(update);
+		else {
+			document.getElementById("ruleContainer").className = "visible";
+			document.getElementById("link").className = "visible";
+		}
 	}
 	update();
 });
