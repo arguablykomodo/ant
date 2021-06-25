@@ -55,7 +55,7 @@
 					(local.get $i)
 					(global.get $data_size)))))
 
-	(func $update (export "update")
+	(func $step
 		(local $state i32)
 		(local $magic i32)
 		(local.set $state
@@ -105,4 +105,17 @@
 						(local.get $magic))
 					(i32.mul
 						(local.get $magic)
-						(i32.const -1)))))))
+						(i32.const -1))))))
+
+	(func $update (export "update") (param $steps i32)
+		(local $i i32)
+		(loop $loop
+			(call $step)
+			(local.set $i
+				(i32.add
+					(local.get $i)
+					(i32.const 1)))
+			(br_if $loop
+				(i32.lt_u
+					(local.get $i)
+					(local.get $steps))))))

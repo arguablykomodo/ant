@@ -71,12 +71,12 @@ imports.direction = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
 randomPallete(buffers.pallete, buffers.rule.length);
 
 WebAssembly.instantiateStreaming(fetch("main.wasm"), { "js": imports }).then(wasm => {
-	let speed = 1;
+	let steps = 1;
 	function update() {
-		for(let i = 0; i < speed; i++) wasm.instance.exports.update();
+		wasm.instance.exports.update(Math.floor(steps));
 		image.data.set(buffers.pixels);
 		context.putImageData(image, 0, 0);
-		speed *= 1.01;
+		steps = Math.min(steps * 1.01, 1000000); // Max 1 million steps per frame
 		requestAnimationFrame(update);
 	}
 	update();
