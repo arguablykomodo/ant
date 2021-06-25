@@ -55,9 +55,10 @@
 					(local.get $i)
 					(global.get $data_size)))))
 
-	(func $step
+	(func $step (result i32)
 		(local $state i32)
 		(local $magic i32)
+		(local $row_position i32)
 		(local.set $state
 			(i32.load8_u
 				(global.get $position)))
@@ -72,6 +73,32 @@
 			(global.get $position)
 			(i32.load8_u
 				(global.get $position)))
+		(local.set $row_position
+			(i32.rem_u
+				(global.get $position)
+				(global.get $width)))
+		(if
+			(i32.or
+				(i32.or
+					(i32.lt_u ;; Top edge
+						(global.get $position)
+						(global.get $width))
+					(i32.gt_u ;; Bottom edge
+						(global.get $position)
+						(i32.sub
+							(global.get $data_size)
+							(global.get $width))))
+				(i32.or
+					(i32.eqz ;; Left edge
+						(local.get $row_position))
+					(i32.ge_u ;; Right edge
+						(local.get $row_position)
+						(i32.sub
+							(global.get $width)
+							(i32.const 2)))))
+			(then
+				(return
+					(i32.const 1))))
 		(global.set $direction
 			(i32.rem_u
 				(i32.add
@@ -105,12 +132,18 @@
 						(local.get $magic))
 					(i32.mul
 						(local.get $magic)
-						(i32.const -1))))))
+						(i32.const -1)))))
+		(return
+			(i32.const 0)))
 
-	(func $update (export "update") (param $steps i32)
+	(func $update (export "update") (param $steps i32) (result i32)
 		(local $i i32)
 		(loop $loop
-			(call $step)
+			(if
+				(call $step)
+				(then
+					(return
+						(i32.const 1))))
 			(local.set $i
 				(i32.add
 					(local.get $i)
@@ -118,4 +151,6 @@
 			(br_if $loop
 				(i32.lt_u
 					(local.get $i)
-					(local.get $steps))))))
+					(local.get $steps))))
+		(return
+			(i32.const 0))))
