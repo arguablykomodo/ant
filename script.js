@@ -1,3 +1,5 @@
+import { randomPallete } from "./pallete.js"
+
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas");
 canvas.width = window.innerWidth;
@@ -38,16 +40,6 @@ const imports = { memory };
 	return acc + size;
 }, 0);
 
-buffers.pallete[0] = 10;
-buffers.pallete[1] = 10;
-buffers.pallete[2] = 20;
-buffers.pallete[3] = 255;
-
-buffers.pallete[4] = 127;
-buffers.pallete[5] = 127;
-buffers.pallete[6] = 255;
-buffers.pallete[7] = 255;
-
 for (let i = 0; i < rule.length; i++) {
 	buffers.rule[i] = rule[i];
 }
@@ -56,6 +48,8 @@ imports.width = new WebAssembly.Global({ value: "i32" }, canvas.width);
 imports.height = new WebAssembly.Global({ value: "i32" }, canvas.height);
 imports.position = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
 imports.direction = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
+
+randomPallete(buffers.pallete, buffers.rule.length);
 
 WebAssembly.instantiateStreaming(fetch("main.wasm"), { "js": imports }).then(wasm => {
 	function update() {
