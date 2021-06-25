@@ -57,6 +57,7 @@
 
 	(func $update (export "update")
 		(local $state i32)
+		(local $magic i32)
 		(local.set $state
 			(i32.load8_u
 				(global.get $position)))
@@ -80,39 +81,28 @@
 							(local.get $state)
 							(global.get $rule))))
 				(i32.const 4)))
-		(if
-			(i32.eq
-				(global.get $direction)
-				(i32.const 0))
-			(then
-				(global.set $position
-					(i32.add
-						(global.get $position)
-						(i32.const 1))))
-		(else (if
-			(i32.eq
-				(global.get $direction)
-				(i32.const 1))
-			(then
-				(global.set $position
-					(i32.sub
-						(global.get $position)
-						(global.get $width))))
-		(else (if
-			(i32.eq
-				(global.get $direction)
-				(i32.const 2))
-			(then
-				(global.set $position
-					(i32.sub
-						(global.get $position)
-						(i32.const 1))))
-		(else (if
-			(i32.eq
-				(global.get $direction)
-				(i32.const 3))
-			(then
-				(global.set $position
-					(i32.add
-						(global.get $position)
-						(global.get $width)))))))))))))
+		;; Here be dragons
+		(local.set $magic
+			(i32.sub
+				(i32.mul
+					(i32.gt_u
+						(global.get $direction)
+						(i32.const 1))
+					(i32.const 2))
+				(i32.const 1)))
+		(global.set $position
+			(i32.add
+				(global.get $position)
+				(i32.add
+					(i32.mul
+						(i32.mul
+							(i32.add
+								(global.get $width)
+								(i32.const 1))
+							(i32.and
+								(global.get $direction)
+								(i32.const 1)))
+						(local.get $magic))
+					(i32.mul
+						(local.get $magic)
+						(i32.const -1)))))))
