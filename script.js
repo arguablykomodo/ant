@@ -71,10 +71,12 @@ imports.direction = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
 randomPallete(buffers.pallete, buffers.rule.length);
 
 WebAssembly.instantiateStreaming(fetch("main.wasm"), { "js": imports }).then(wasm => {
+	let speed = 1;
 	function update() {
-		wasm.instance.exports.update();
+		for(let i = 0; i < speed; i++) wasm.instance.exports.update();
 		image.data.set(buffers.pixels);
 		context.putImageData(image, 0, 0);
+		speed *= 1.01;
 		requestAnimationFrame(update);
 	}
 	update();

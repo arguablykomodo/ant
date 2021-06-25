@@ -1,7 +1,13 @@
+@keyframes zoom-out {
+	from { transform: scale(10); }
+	to { transform: scale(1); }
+}
+
 body {
 	margin: 0;
 	background: black;
 	color: white;
+	overflow: hidden;
 }
 
 canvas {
@@ -13,4 +19,5 @@ canvas {
 	height: 100vh;
 	object-fit: cover;
 	image-rendering: crisp-edges;
+	animation: zoom-out 15s;
 }
