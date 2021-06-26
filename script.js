@@ -65,7 +65,6 @@ for (let i = 0; i < rule.length; i++) {
 }
 
 imports.width = new WebAssembly.Global({ value: "i32" }, canvas.width);
-imports.height = new WebAssembly.Global({ value: "i32" }, canvas.height);
 imports.position = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
 imports.direction = new WebAssembly.Global({ value: "i32", mutable: true }, 0);
 

@@ -1,13 +1,11 @@
 (module
 	(import "js" "memory" (memory 1))
 	(import "js" "data_size" (global $data_size i32))
-	(import "js" "pixels" (global $pixels i32))
 	(import "js" "pallete" (global $pallete i32))
 	(import "js" "rule" (global $rule i32))
 	(import "js" "rule_size" (global $rule_size i32))
 
 	(import "js" "width" (global $width i32))
-	(import "js" "height" (global $height i32))
 	(import "js" "position" (global $position (mut i32)))
 	(import "js" "direction" (global $direction (mut i32)))
 
@@ -17,7 +15,7 @@
 				(i32.mul
 					(local.get $i)
 					(i32.const 4))
-				(global.get $pixels))
+				(global.get $data_size))
 			(i32.load
 				(i32.add
 					(i32.mul
@@ -30,15 +28,9 @@
 		(local $i i32)
 		(global.set $direction (i32.const 2))
 		(global.set $position
-			(i32.add
-				(i32.mul
-					(i32.div_u
-						(global.get $height)
-						(i32.const 2))
-					(global.get $width))
-				(i32.div_u
-					(global.get $width)
-					(i32.const 2))))
+			(i32.div_u
+				(global.get $data_size)
+				(i32.const 2)))
 		(loop $loop
 			(i32.store8
 				(local.get $i)
