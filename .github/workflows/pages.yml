@@ -1,0 +1,19 @@
+name: Github Pages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mwilliamson/setup-wabt-action@v1
+        with:
+          wabt-version: 1.0.23
+      - run: wat2wasm main.wat
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: .github,main.wat,.gitignore,readme.md
