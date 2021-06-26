@@ -49,6 +49,12 @@ const context = canvas.getContext("2d", { alpha: false });
 
 const image = context.createImageData(canvas.width, canvas.height);
 
+function showControls() {
+	ruleContainer.className = "visible";
+	infoLink.className = "visible";
+}
+
+setTimeout(showControls, 20 * 1000);
 buildWasm(canvas.width, canvas.height, rule).then(({ update, pixels }) => {
 	let steps = 1;
 	function render() {
@@ -57,10 +63,7 @@ buildWasm(canvas.width, canvas.height, rule).then(({ update, pixels }) => {
 		context.putImageData(image, 0, 0);
 		steps = Math.min(steps * 1.01, 1000000); // Max 1 million steps per frame
 		if (shouldContinue) requestAnimationFrame(render);
-		else {
-			ruleContainer.className = "visible";
-			infoLink.className = "visible";
-		}
+		else showControls();
 	}
 	requestAnimationFrame(render);
 });
