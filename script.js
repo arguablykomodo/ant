@@ -4,10 +4,12 @@ import { buildWasm } from "./wasm.js";
 const canvas = document.getElementById("canvas");
 /** @type {HTMLInputElement} */
 const ruleInput = document.getElementById("rule");
+/** @type {HTMLAnchorElement} */
+const ruleLink = document.getElementById("ruleLink");
 /** @type {HTMLDivElement} */
 const ruleContainer = document.getElementById("ruleContainer");
 /** @type {HTMLAnchorElement} */
-const link = document.getElementById("link");
+const infoLink = document.getElementById("infoLink");
 
 const rules = [
 	"LR",
@@ -29,8 +31,17 @@ const rules = [
 	"RLRLRRRRRRRL",
 ];
 
-const rule = rules[Math.floor(Math.random() * rules.length)];
+const urlParams = (new URL(document.location)).searchParams;
+const rule = urlParams.has("rule")
+	? urlParams.get("rule")
+	: rules[Math.floor(Math.random() * rules.length)];
+
 ruleInput.value = rule;
+ruleLink.href = `?rule=${rule}`;
+
+ruleInput.addEventListener("input", () => {
+	ruleLink.href = `?rule=${ruleInput.value}`;
+});
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -48,7 +59,7 @@ buildWasm(canvas.width, canvas.height, rule).then(({ update, pixels }) => {
 		if (shouldContinue) requestAnimationFrame(render);
 		else {
 			ruleContainer.className = "visible";
-			link.className = "visible";
+			infoLink.className = "visible";
 		}
 	}
 	requestAnimationFrame(render);

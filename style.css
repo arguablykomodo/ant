@@ -26,7 +26,7 @@ canvas {
 }
 
 #ruleContainer.visible,
-#link.visible {
+#infoLink.visible {
 	transition: opacity 3s;
 	opacity: 1;
 }
@@ -60,7 +60,13 @@ input {
 	font-size: 0.8rem;
 }
 
-#link {
+a {
+	background: rgba(0, 0, 0, 0.9);
+	color: white;
+	text-decoration: none;
+}
+
+#infoLink {
 	position: absolute;
 	right: 0;
 	bottom: 0;
@@ -72,9 +78,5 @@ input {
 	vertical-align: middle;
 	line-height: 3ch;
 
-	background: rgba(0, 0, 0, 0.9);
-	color: white;
-
-	text-decoration: none;
 	opacity: 0;
 }
