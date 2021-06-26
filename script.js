@@ -34,11 +34,7 @@ ruleInput.value = rule;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const context = canvas.getContext("2d", {
-	alpha: false,
-	// TODO: Unsure what this option does
-	// desynchronized: false
-});
+const context = canvas.getContext("2d", { alpha: false });
 
 const image = context.createImageData(canvas.width, canvas.height);
 
