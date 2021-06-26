@@ -18,7 +18,7 @@ function magic(n, h, s, l) {
  * @param {number} l
  */
 function HslToRgb(h, s, l) {
-	return [magic(0, h, s, l), magic(8, h, s, l), magic(4, h, s, l)]
+	return [magic(0, h, s, l), magic(8, h, s, l), magic(4, h, s, l)];
 }
 
 const phi = (1 + Math.sqrt(5)) / 2;
