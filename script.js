@@ -12,23 +12,26 @@ const ruleContainer = document.getElementById("ruleContainer");
 const infoLink = document.getElementById("infoLink");
 
 const rules = [
-	"LR",
-	"RRLR",
-	"RLRRLLRLLLLL",
-	"RRLLLRLLLRLL",
-	"LLRR",
-	"RLLR",
-	"RRLLLRLLLRRR",
-	"RRRLRRLRRR",
-	"RRLRLLRLRR",
-	"RRLLLRLLLR",
-	"RRLRLLRRRRLL",
-	"RLLLLRRRLLL",
-	"RLLLLLLRRRRL",
-	"RRLLLRLLLLL",
-	"RRLRRRLLLLLL",
-	"RLLRRRLRRRRR",
-	"RLRLRRRRRRRL",
+  "LR", // The original
+  "RLR", // Chaotic
+  "RLLR", // Robot
+  "RRLR", // Highway
+  "LRRRRRLLR", // Expanding square with bouncing roads
+  "RRLLLRLLLR", // Filled Triangle
+  "RRLRLLRLRR", // Thick highway
+  "RRRLRRLRRR", // Thick triangle
+  "RLLLLRRRLLL", // Expanding square with spiral roads
+  "RRLLLRLLLLL", // Expanding fractal triangles
+  "LLRRRLRLRLLR", // Squiggly highway
+  "RLLLLLLRRRRL", // Expanding spiral with random alleys
+  "RLLRRRLRRRRR", // Bismuth
+  "RLRLRRRRRRRL", // Expanding binary patterns
+  "RLRRLLRLLLLL", // Highway
+  "RRLLLRLLLRLL", // Triangle
+  "RRLLLRLLLRRR", // Semi-filled triangle
+  "RRLRLLRRRRLL", // Crystal highway
+  "RRLRRRLLLLLL", // Expanding triangular crystals
+  "RLLLLRRLRLRLL" // Chaos inside square
 ];
 
 const urlParams = (new URL(document.location)).searchParams;
