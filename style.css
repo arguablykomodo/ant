@@ -1,0 +1,82 @@
+@keyframes zoom-out {
+	from { transform: scale(10); }
+	to { transform: scale(1); }
+}
+
+body {
+	margin: 0;
+	background: black;
+	color: white;
+	overflow: hidden;
+	font-family: system-ui, sans-serif;
+}
+
+canvas {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	object-fit: contain;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+	animation: zoom-out 15s;
+	z-index: -1;
+}
+
+#ruleContainer.visible,
+#infoLink.visible {
+	transition: opacity 3s;
+	opacity: 1;
+}
+
+#ruleContainer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+
+	height: 3ch;
+	padding: 0 .5ch;
+
+	text-align: center;
+	line-height: 3ch;
+
+	background: rgba(0, 0, 0, 0.9);
+	opacity: 0;
+}
+
+input {
+	padding: 0;
+	margin: 0;
+
+	border: none;
+	border-bottom: 1px dotted white;
+
+	background: transparent;
+	color: white;
+
+	font-family: monospace;
+	font-size: 0.8rem;
+}
+
+a {
+	background: rgba(0, 0, 0, 0.9);
+	color: white;
+	text-decoration: none;
+}
+
+#infoLink {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	width: 3ch;
+	height: 3ch;
+
+	text-align: center;
+	vertical-align: middle;
+	line-height: 3ch;
+
+	opacity: 0;
+}
