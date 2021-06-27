@@ -37,6 +37,7 @@ export async function buildWasm(width, height, rule) {
 		rule: global(ruleStart),
 		rule_size: global(ruleSize),
 		width: global(width),
+		height: global(height),
 		position: global(0, true),
 		direction: global(0, true),
 	};

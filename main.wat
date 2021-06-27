@@ -6,6 +6,7 @@
 	(import "js" "rule_size" (global $rule_size i32))
 
 	(import "js" "width" (global $width i32))
+	(import "js" "height" (global $height i32))
 	(import "js" "position" (global $position (mut i32)))
 	(import "js" "direction" (global $direction (mut i32)))
 
@@ -28,9 +29,19 @@
 		(local $i i32)
 		(global.set $direction (i32.const 2))
 		(global.set $position
-			(i32.div_u
-				(global.get $data_size)
-				(i32.const 2)))
+			(i32.add
+				(i32.div_u
+					(global.get $data_size)
+					(i32.const 2))
+				(i32.mul ;; Add half a width if the height is even
+					(i32.div_u
+						(global.get $width)
+						(i32.const 2))
+					(i32.xor
+						(i32.and
+							(global.get $height)
+							(i32.const 1))
+						(i32.const 1)))))
 		(loop $loop
 			(i32.store8
 				(local.get $i)
