@@ -16,7 +16,7 @@ function magic(n, h, s, v) {
  * @param {number} s
  * @param {number} v
  */
-function HslToRgb(h, s, v) {
+function HsvToRgb(h, s, v) {
 	return [magic(5, h, s, v), magic(3, h, s, v), magic(1, h, s, v)];
 }
 
@@ -30,7 +30,7 @@ export function randomPallete(buffer, ruleSize) {
 	let h = Math.random() * 360;
 	let v = 0;
 	for (let i = 0; i < ruleSize * 4; i += 4) {
-		const [r, g, b] = HslToRgb(h, s, v);
+		const [r, g, b] = HsvToRgb(h, s, v);
 		buffer[i] = Math.floor(r * 256);
 		buffer[i + 1] = Math.floor(g * 256);
 		buffer[i + 2] = Math.floor(b * 256);
